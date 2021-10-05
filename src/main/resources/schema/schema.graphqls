@@ -1,0 +1,20 @@
+# GraphQL Server API:
+# https://api.spacex.land/graphql/
+
+type Query {
+    histories: [Histories]
+    users: [User]
+}
+
+type Histories {
+    title: String
+    details: String
+}
+
+type User {
+    id: String
+    name: String
+    rocket: String
+    timestamp: String
+    twitter: String
+}

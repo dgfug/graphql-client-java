@@ -1,22 +1,39 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.5'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.5.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+
+    // manual add
+    id("com.netflix.dgs.codegen") version "5.1.2"
 }
 
 group = 'com.hv.catalog'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+// manual add of generateJava
+generateJava {
+    schemaPaths = ["${projectDir}/src/main/resources/schema"] // List of directories containing schema files
+    packageName = 'com.hv.catalog.graphql.generated' // The package name to use to generate sources
+    generateClient = true // Enable generating the type safe query API
+}
+
 repositories {
-	mavenCentral()
+    mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // manual add
+    implementation(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release"))
+    implementation "com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter"
+    implementation "com.netflix.graphql.dgs:graphql-dgs-client:4.9.0"
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
