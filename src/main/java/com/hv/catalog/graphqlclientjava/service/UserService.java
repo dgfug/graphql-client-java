@@ -2,7 +2,7 @@ package com.hv.catalog.graphqlclientjava.service;
 
 import com.hv.catalog.graphql.generated.client.UsersGraphQLQuery;
 import com.hv.catalog.graphql.generated.client.UsersProjectionRoot;
-import com.hv.catalog.graphql.generated.types.User;
+import com.hv.catalog.graphql.generated.types.MyUser;
 import com.hv.catalog.graphqlclientjava.util.GraphqlClientUtils;
 import com.jayway.jsonpath.TypeRef;
 import com.netflix.graphql.dgs.client.GraphQLResponse;
@@ -40,8 +40,8 @@ public class UserService {
    *
    * @return list
    */
-  public List<User> getUsers() {
-    List<User> userList = Collections.emptyList();
+  public List<MyUser> getUsers() {
+    List<MyUser> userList = Collections.emptyList();
     WebClientGraphQLClient client = getClient();
     UsersGraphQLQuery query = UsersGraphQLQuery.newRequest().build();
     GraphQLQueryRequest request = new GraphQLQueryRequest(query,
@@ -50,14 +50,14 @@ public class UserService {
     GraphQLResponse response = responseMono.block();
     if (response != null) {
       userList = response.extractValueAsObject(query.getOperationName(),
-          new TypeRef<List<User>>() {
+          new TypeRef<List<MyUser>>() {
           });
     }
     return userList;
   }
 
-  public User getUserByName(String name) {
-    User user = null;
+  public MyUser getUserByName(String name) {
+    MyUser user = null;
     WebClientGraphQLClient client = getClient();
     UsersGraphQLQuery query = UsersGraphQLQuery.newRequest().build();
     GraphQLQueryRequest request = new GraphQLQueryRequest(query, new UsersProjectionRoot().id());
@@ -65,7 +65,7 @@ public class UserService {
     GraphQLResponse response = responseMono.block();
     if (response != null) {
       user = response.extractValueAsObject(query.getOperationName(),
-          new TypeRef<User>() {
+          new TypeRef<MyUser>() {
           });
     }
     return user;

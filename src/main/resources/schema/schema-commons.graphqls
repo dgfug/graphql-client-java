@@ -1,0 +1,13 @@
+type PaginationInfo {
+    currentPage: Int!
+    hasNextPage: Boolean
+    hasPreviousPage: Boolean
+    itemCount: Int
+    pageCount: Int
+    perPage: Int!
+}
+
+interface ErrorInterface {
+    "Generic error message"
+    message: String
+}

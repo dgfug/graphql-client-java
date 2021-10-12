@@ -17,8 +17,11 @@ generateJava {
     packageName = 'com.hv.catalog.graphql.generated' // The package name to use to generate sources
     generateClient = true // Enable generating the type safe query API
     typeMapping = [
-            "uuid"       : "java.util.UUID",
-            "timestamptz": "java.sql.Timestamp"
+            "uuid"          : "java.util.UUID",
+            "timestamptz"   : "java.sql.Timestamp",
+            "MongoID"       : "java.lang.String",
+            "JSON"          : "java.util.Map",
+            "RegExpAsString": "java.lang.String"
     ]
 }
 

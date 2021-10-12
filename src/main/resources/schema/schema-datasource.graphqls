@@ -1,0 +1,1545 @@
+extend type Query {
+    DatasourceById(_id: MongoID!): Datasource
+    DatasourceByIds(_ids: [MongoID!]!, limit: Int = 100, sort: SortFindByIdsDatasourceInput): [Datasource!]!
+    DatasourceCount(
+        "Filter by fields"
+        filter: FilterCountDatasourceInput
+    ): Int
+    DatasourcePagination(
+        "Filter by fields"
+        filter: FilterFindManyDatasourceInput,
+        "Page number for displaying"
+        page: Int,
+        perPage: Int = 20,
+        sort: SortFindManyDatasourceInput
+    ): DatasourcePagination
+    DatasourcesMany(
+        "Filter by fields"
+        filter: FilterFindManyDatasourceInput,
+        limit: Int = 100,
+        skip: Int,
+        sort: SortFindManyDatasourceInput
+    ): [Datasource!]!
+    DatasourcesOne(
+        "Filter by fields"
+        filter: FilterFindOneDatasourceInput,
+        skip: Int,
+        sort: SortFindOneDatasourceInput
+    ): Datasource
+}
+
+type Datasource {
+    _id: MongoID!
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: DatasourceAttributes
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String!
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String!
+    "Source URI of the datasource"
+    sourceURI: String!
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String!
+}
+
+type DatasourceAttributes {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}
+
+input FilterCountDatasourceAttributesInput {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}
+
+input FilterCountDatasourceInput {
+    AND: [FilterCountDatasourceInput!]
+    OR: [FilterCountDatasourceInput!]
+    _id: MongoID
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterCountDatasourceOperatorsInput
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: FilterCountDatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String
+    "Source URI of the datasource"
+    sourceURI: String
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String
+}
+
+enum SortFindByIdsDatasourceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+
+"State of the source. Default value is \"Available\""
+enum EnumDatasourceSourceState {
+    Available
+    MarkedForDeletion
+    Unreachable
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterCountDatasourceOperatorsInput {
+    _id: FilterCountDatasource_idOperatorsInput
+    _logicalId: FilterCountDatasource_logicalIdOperatorsInput
+    name: FilterCountDatasourceNameOperatorsInput
+}
+
+input FilterCountDatasource_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+
+input FilterCountDatasource_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input FilterCountDatasourceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input FilterFindManyDatasourceInput {
+    AND: [FilterFindManyDatasourceInput!]
+    OR: [FilterFindManyDatasourceInput!]
+    _id: MongoID
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterFindManyDatasourceOperatorsInput
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: FilterFindManyDatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String
+    "Source URI of the datasource"
+    sourceURI: String
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String
+}
+
+input FilterFindManyDatasourceAttributesInput {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}
+
+enum SortFindManyDatasourceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+
+"List of items with pagination."
+type DatasourcePagination {
+    "Total object count."
+    count: Int
+    "Array of objects."
+    items: [Datasource!]
+    "Information to aid in pagination."
+    pageInfo: PaginationInfo!
+}
+
+input FilterFindOneDatasourceInput {
+    AND: [FilterFindOneDatasourceInput!]
+    OR: [FilterFindOneDatasourceInput!]
+    _id: MongoID
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterFindOneDatasourceOperatorsInput
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: FilterFindOneDatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String
+    "Source URI of the datasource"
+    sourceURI: String
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterFindOneDatasourceOperatorsInput {
+    _id: FilterFindOneDatasource_idOperatorsInput
+    _logicalId: FilterFindOneDatasource_logicalIdOperatorsInput
+    name: FilterFindOneDatasourceNameOperatorsInput
+}
+
+input FilterFindOneDatasource_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+
+input FilterFindOneDatasource_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input FilterFindOneDatasourceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+enum SortFindOneDatasourceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterFindManyDatasourceOperatorsInput {
+    _id: FilterFindManyDatasource_idOperatorsInput
+    _logicalId: FilterFindManyDatasource_logicalIdOperatorsInput
+    name: FilterFindManyDatasourceNameOperatorsInput
+}
+
+input FilterFindManyDatasource_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+
+input FilterFindManyDatasource_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input FilterFindManyDatasourceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input FilterFindOneDatasourceAttributesInput {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}
+
+extend type Mutation {
+    "Creates Many documents with mongoose defaults, setters, hooks and validation"
+    DatasourceCreateMany(records: [CreateManyDatasourceInput!]!): CreateManyDatasourcePayload
+    "Create one document with mongoose defaults, setters, hooks and validation"
+    DatasourceCreateOne(record: CreateOneDatasourceInput!): CreateOneDatasourcePayload
+    "Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document."
+    DatasourceRemoveById(_id: MongoID!): RemoveByIdDatasourcePayload
+    "Remove many documents without returning them: Use Query.remove mongoose method. Do not apply mongoose defaults, setters, hooks and validation. "
+    DatasourceRemoveMany(
+        "Filter by fields"
+        filter: FilterRemoveManyDatasourceInput!,
+        limit: Int = 100
+    ): RemoveManyDatasourcePayload
+    "Remove one document: 1) Remove with hooks via findOneAndRemove. 2) Return removed document."
+    DatasourceRemoveOne(
+        "Filter by fields"
+        filter: FilterRemoveOneDatasourceInput,
+        sort: SortRemoveOneDatasourceInput
+    ): RemoveOneDatasourcePayload
+    "Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it."
+    DatasourceUpdateById(_id: MongoID!, record: UpdateByIdDatasourceInput!): UpdateByIdDatasourcePayload
+    "Update many documents without returning them: Use Query.update mongoose method. Do not apply mongoose defaults, setters, hooks and validation. "
+    DatasourceUpdateMany(
+        "Filter by fields"
+        filter: FilterUpdateManyDatasourceInput,
+        limit: Int = 100,
+        record: UpdateManyDatasourceInput!,
+        skip: Int,
+        sort: SortUpdateManyDatasourceInput
+    ): UpdateManyDatasourcePayload
+    "Update one document: 1) Retrieve one document via findOne. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it."
+    DatasourceUpdateOne(
+        "Filter by fields"
+        filter: FilterUpdateOneDatasourceInput,
+        record: UpdateOneDatasourceInput!,
+        skip: Int,
+        sort: SortUpdateOneDatasourceInput
+    ): UpdateOneDatasourcePayload
+}
+
+input CreateManyDatasourceInput {
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: DatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String!
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String!
+    "Source URI of the datasource"
+    sourceURI: String!
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String!
+}
+
+type CreateManyDatasourcePayload {
+    "Number of created documents"
+    createdCount: Int!
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Documents IDs"
+    recordIds: [MongoID!]!
+    "Created documents"
+    records: [Datasource!]
+}
+
+
+input DatasourceAttributesInput {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}
+
+input CreateOneDatasourceInput {
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: DatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String!
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String!
+    "Source URI of the datasource"
+    sourceURI: String!
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String!
+}
+type CreateOneDatasourcePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Created document"
+    record: Datasource
+    "Document ID"
+    recordId: MongoID
+}
+type RemoveByIdDatasourcePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Removed document"
+    record: Datasource
+    "Document ID"
+    recordId: MongoID
+}
+input FilterRemoveManyDatasourceInput {
+    AND: [FilterRemoveManyDatasourceInput!]
+    OR: [FilterRemoveManyDatasourceInput!]
+    _id: MongoID
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterRemoveManyDatasourceOperatorsInput
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: FilterRemoveManyDatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String
+    "Source URI of the datasource"
+    sourceURI: String
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String
+}
+input FilterRemoveManyDatasourceAttributesInput {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}
+type RemoveManyDatasourcePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Affected documents number"
+    numAffected: Int
+}
+input FilterRemoveOneDatasourceInput {
+    AND: [FilterRemoveOneDatasourceInput!]
+    OR: [FilterRemoveOneDatasourceInput!]
+    _id: MongoID
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterRemoveOneDatasourceOperatorsInput
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: FilterRemoveOneDatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String
+    "Source URI of the datasource"
+    sourceURI: String
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String
+}
+
+enum SortRemoveOneDatasourceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+
+type RemoveOneDatasourcePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Removed document"
+    record: Datasource
+    "Document ID"
+    recordId: MongoID
+}
+input UpdateByIdDatasourceInput {
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: UpdateByIdDatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String
+    "Source URI of the datasource"
+    sourceURI: String
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String
+}
+type UpdateByIdDatasourcePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Updated document"
+    record: Datasource
+    "Document ID"
+    recordId: MongoID
+}
+input FilterUpdateManyDatasourceInput {
+    AND: [FilterUpdateManyDatasourceInput!]
+    OR: [FilterUpdateManyDatasourceInput!]
+    _id: MongoID
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterUpdateManyDatasourceOperatorsInput
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: FilterUpdateManyDatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String
+    "Source URI of the datasource"
+    sourceURI: String
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String
+}
+input UpdateManyDatasourceInput {
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: UpdateManyDatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String
+    "Source URI of the datasource"
+    sourceURI: String
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String
+}
+enum SortUpdateManyDatasourceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+type UpdateManyDatasourcePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Affected documents number"
+    numAffected: Int
+}
+input FilterUpdateOneDatasourceInput {
+    AND: [FilterUpdateOneDatasourceInput!]
+    OR: [FilterUpdateOneDatasourceInput!]
+    _id: MongoID
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterUpdateOneDatasourceOperatorsInput
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: FilterUpdateOneDatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String
+    "Source URI of the datasource"
+    sourceURI: String
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String
+}
+type UpdateOneDatasourcePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Updated document"
+    record: Datasource
+    "Document ID"
+    recordId: MongoID
+}
+input UpdateOneDatasourceInput {
+    "Logical id of the datasource. It should be unique if provided by the user. Otherwise, it gets a unique id internally."
+    _logicalId: String
+    "Agent ID"
+    agentId: MongoID
+    "Agent local URI"
+    agentLocalURI: String
+    "Datasource attributes"
+    attributes: UpdateOneDatasourceAttributesInput
+    "Data version of the datasource"
+    dataVersion: Float
+    "Description of the datasource"
+    description: String
+    "Display name of the datasource"
+    displayName: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "Labels of the datasource"
+    labels: [String]
+    "Name of the datasource"
+    name: String
+    "References of the Rich description collection. Ids in the list format"
+    richDescriptionIds: [MongoID]
+    "Root virtual folder ID"
+    rootVirtualFolder: MongoID
+    "State of the source. Default value is \"Available\""
+    sourceState: EnumDatasourceSourceState
+    "Sub-type of the Datasource. Values can be \"Postgres\", \"MySQL\", \"HDFS\", \"S3\", \"Azure_Objectstore\" and so on"
+    sourceType: String
+    "Source URI of the datasource"
+    sourceURI: String
+    "Statistics of the datasource"
+    statistics: JSON
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the Datasource. Values can be \"Database\", \"FileSystem\", \"Application\", \"Registered\""
+    type: String
+}
+enum SortUpdateOneDatasourceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+
+#"For performance reason this type contains only *indexed* fields."
+#input FilterRemoveManyDatasourceOperatorsInput {
+#    _id: FilterRemoveManyDatasource_idOperatorsInput
+#    _logicalId: FilterRemoveManyDatasource_logicalIdOperatorsInput
+#    name: FilterRemoveManyDatasourceNameOperatorsInput
+#}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterRemoveOneDatasourceOperatorsInput {
+    _id: FilterRemoveOneDatasource_idOperatorsInput
+    _logicalId: FilterRemoveOneDatasource_logicalIdOperatorsInput
+    name: FilterRemoveOneDatasourceNameOperatorsInput
+}
+
+input FilterRemoveOneDatasourceAttributesInput {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterRemoveManyDatasourceOperatorsInput {
+    _id: FilterRemoveManyDatasource_idOperatorsInput
+    _logicalId: FilterRemoveManyDatasource_logicalIdOperatorsInput
+    name: FilterRemoveManyDatasourceNameOperatorsInput
+}
+input FilterRemoveManyDatasource_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+
+input FilterRemoveManyDatasource_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input FilterRemoveManyDatasourceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input FilterRemoveOneDatasource_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterRemoveOneDatasource_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input UpdateByIdDatasourceAttributesInput {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}
+
+input FilterUpdateManyDatasourceAttributesInput {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}
+
+input FilterRemoveOneDatasourceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterUpdateManyDatasourceOperatorsInput {
+    _id: FilterUpdateManyDatasource_idOperatorsInput
+    _logicalId: FilterUpdateManyDatasource_logicalIdOperatorsInput
+    name: FilterUpdateManyDatasourceNameOperatorsInput
+}
+
+input FilterUpdateManyDatasource_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+
+input FilterUpdateManyDatasource_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input FilterUpdateManyDatasourceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input UpdateOneDatasourceAttributesInput {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterUpdateOneDatasourceOperatorsInput {
+    _id: FilterUpdateOneDatasource_idOperatorsInput
+    _logicalId: FilterUpdateOneDatasource_logicalIdOperatorsInput
+    name: FilterUpdateOneDatasourceNameOperatorsInput
+}
+input FilterUpdateOneDatasource_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+
+input FilterUpdateOneDatasource_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input FilterUpdateOneDatasourceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input FilterUpdateOneDatasourceAttributesInput {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}
+input UpdateManyDatasourceAttributesInput {
+    "List of buckets"
+    buckets: [String]
+    "CoresiteXML in string representation"
+    coreSiteXML: String
+    "Credentials of the data source"
+    credentials: JSON
+    "Driver name of the database"
+    dbDriverName: String
+    "Flag to identify whether the database inserts can be detected"
+    dbInsertsAreDetected: Boolean
+    "Name of the database"
+    dbName: String
+    "Flag to identify whether the database supports ANSI92FullSQL"
+    dbSupportsANSI92FullSQL: Boolean
+    "Flag to identify whether the database supports Alter table with add columns"
+    dbSupportsAlterTableWithAddColumn: Boolean
+    "Flag to identify whether the database supports Batch updates"
+    dbSupportsBatchUpdates: Boolean
+    "Flag to identify whether the database supports Mixed case identifiers"
+    dbSupportsMixedCaseIdentifiers: Boolean
+    "Flag to identify whether the database supports multiple transactions"
+    dbSupportsMultipleTransactions: Boolean
+    "Flag to identify whether the database supports positioned delete"
+    dbSupportsPositionedDelete: Boolean
+    "Flag to identify whether the database supports positioned update"
+    dbSupportsPositionedUpdate: Boolean
+    "Flag to identify whether the database supports result set type"
+    dbSupportsResultSetType: Boolean
+    "Flag to identify whether the database supports schemas in datamanipulation"
+    dbSupportsSchemasInDataManipulation: Boolean
+    "Flag to identify whether the database supports transactions"
+    dbSupportsTransations: Boolean
+    "Flag to identify whether the database updates can be detected "
+    dbUpdatesAreDetected: Boolean
+    "Version of the database"
+    dbVersion: String
+    "List of root paths"
+    rootPaths: [String]
+    "List of schemas of the database "
+    schemas: [String]
+}

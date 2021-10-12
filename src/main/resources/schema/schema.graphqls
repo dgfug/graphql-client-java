@@ -3,7 +3,7 @@
 
 extend type Query {
     historiesBasic: [Histories]
-    usersBasic: [User]
+    usersBasic: [MyUser]
 }
 
 type Histories {
@@ -11,7 +11,7 @@ type Histories {
     details: String
 }
 
-type User {
+type MyUser {
     id: String
     name: String
     rocket: String
