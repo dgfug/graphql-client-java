@@ -5,7 +5,6 @@ import com.hv.catalog.graphql.generated.client.Update_usersProjectionRoot;
 import com.hv.catalog.graphql.generated.client.Update_users_ReturningProjection;
 import com.hv.catalog.graphql.generated.client.UsersGraphQLQuery;
 import com.hv.catalog.graphql.generated.client.UsersProjectionRoot;
-import com.hv.catalog.graphql.generated.types.User;
 import com.hv.catalog.graphql.generated.types.users;
 import com.hv.catalog.graphql.generated.types.users_bool_exp;
 import com.hv.catalog.graphql.generated.types.users_mutation_response;
@@ -17,6 +16,7 @@ import com.netflix.graphql.dgs.client.GraphQLResponse;
 import com.netflix.graphql.dgs.client.MonoGraphQLClient;
 import com.netflix.graphql.dgs.client.WebClientGraphQLClient;
 import com.netflix.graphql.dgs.client.codegen.GraphQLQueryRequest;
+import graphql.Assert;
 import graphql.scalar.GraphqlIDCoercing;
 import graphql.schema.Coercing;
 import java.util.HashMap;
@@ -72,6 +72,7 @@ public class UserTests {
         });
     Assertions.assertNotNull(response);
     Assertions.assertFalse(usersList.isEmpty());
+    Assertions.assertEquals(1, usersList.size());
     Assertions.assertTrue(usersList.stream().anyMatch(user -> user.getId().equals(uuid)));
   }
 
@@ -115,6 +116,7 @@ public class UserTests {
         });
     List<users> users = user.getReturning();
     Assertions.assertNotNull(user);
+    Assertions.assertEquals(1, users.size());
     Assertions.assertTrue(users.stream().anyMatch(user1 -> user1.getId().toString().equals(userId)));
     Assertions.assertTrue(users.stream().anyMatch(user1 -> user1.getName().equals(userName)));
   }
