@@ -1,9 +1,9 @@
 # GraphQL Server API:
 # https://api.spacex.land/graphql/
 
-type Query {
-    histories: [Histories]
-    users: [User]
+extend type Query {
+    historiesBasic: [Histories]
+    usersBasic: [User]
 }
 
 type Histories {
