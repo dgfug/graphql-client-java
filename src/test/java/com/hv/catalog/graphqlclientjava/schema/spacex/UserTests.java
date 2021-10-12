@@ -67,11 +67,12 @@ public class UserTests {
     Mono<GraphQLResponse> responseMono = client.reactiveExecuteQuery(request.serialize());
     GraphQLResponse response = responseMono.block();
     Assertions.assertNotNull(response);
-    List<User> usersList = response.extractValueAsObject(query.getOperationName(),
-        new TypeRef<List<User>>() {
+    List<users> usersList = response.extractValueAsObject(query.getOperationName(),
+        new TypeRef<List<users>>() {
         });
     Assertions.assertNotNull(response);
     Assertions.assertFalse(usersList.isEmpty());
+    Assertions.assertTrue(usersList.stream().anyMatch(user -> user.getId().equals(uuid)));
   }
 
   @Test
