@@ -1,0 +1,1649 @@
+extend type Query {
+    jobInstanceCount(
+        "Filter by fields"
+        filter: FilterCountJobInstanceInput
+    ): Int
+    jobInstanceFindById(_id: MongoID!): JobInstance
+    jobInstanceFindByIds(_ids: [MongoID!]!, limit: Int = 100, sort: SortFindByIdsJobInstanceInput): [JobInstance!]!
+    jobInstanceFindMany(
+        "Filter by fields"
+        filter: FilterFindManyJobInstanceInput,
+        limit: Int = 100,
+        skip: Int,
+        sort: SortFindManyJobInstanceInput
+    ): [JobInstance!]!
+    jobInstanceFindOne(
+        "Filter by fields"
+        filter: FilterFindOneJobInstanceInput,
+        skip: Int,
+        sort: SortFindOneJobInstanceInput
+    ): JobInstance
+    jobInstancePagination(
+        "Filter by fields"
+        filter: FilterFindManyJobInstanceInput,
+        "Page number for displaying"
+        page: Int,
+        perPage: Int = 20,
+        sort: SortFindManyJobInstanceInput
+    ): JobInstancePagination
+}
+
+extend type Mutation {
+    "Creates Many documents with mongoose defaults, setters, hooks and validation"
+    jobInstanceCreateMany(records: [CreateManyJobInstanceInput!]!): CreateManyJobInstancePayload
+    "Create one document with mongoose defaults, setters, hooks and validation"
+    jobInstanceCreateOne(record: CreateOneJobInstanceInput!): CreateOneJobInstancePayload
+    "Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document."
+    jobInstanceRemoveById(_id: MongoID!): RemoveByIdJobInstancePayload
+    "Remove many documents without returning them: Use Query.remove mongoose method. Do not apply mongoose defaults, setters, hooks and validation. "
+    jobInstanceRemoveMany(
+        "Filter by fields"
+        filter: FilterRemoveManyJobInstanceInput!,
+        limit: Int = 100
+    ): RemoveManyJobInstancePayload
+    "Remove one document: 1) Remove with hooks via findOneAndRemove. 2) Return removed document."
+    jobInstanceRemoveOne(
+        "Filter by fields"
+        filter: FilterRemoveOneJobInstanceInput,
+        sort: SortRemoveOneJobInstanceInput
+    ): RemoveOneJobInstancePayload
+    "Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it."
+    jobInstanceUpdateById(_id: MongoID!, record: UpdateByIdJobInstanceInput!): UpdateByIdJobInstancePayload
+    "Update many documents without returning them: Use Query.update mongoose method. Do not apply mongoose defaults, setters, hooks and validation. "
+    jobInstanceUpdateMany(
+        "Filter by fields"
+        filter: FilterUpdateManyJobInstanceInput,
+        limit: Int = 100,
+        record: UpdateManyJobInstanceInput!,
+        skip: Int,
+        sort: SortUpdateManyJobInstanceInput
+    ): UpdateManyJobInstancePayload
+    "Update one document: 1) Retrieve one document via findOne. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it."
+    jobInstanceUpdateOne(
+        "Filter by fields"
+        filter: FilterUpdateOneJobInstanceInput,
+        record: UpdateOneJobInstanceInput!,
+        skip: Int,
+        sort: SortUpdateOneJobInstanceInput
+    ): UpdateOneJobInstancePayload
+}
+
+
+type JobInstance {
+    _id: MongoID!
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: JobInstanceExportJobArguments
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String!
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "type of the entity , constant value job_instance"
+    type: String
+}
+
+"background task type"
+enum EnumJobInstanceBackgroundTaskType {
+    ENTITY_CREATE
+    ENTITY_DELETE
+    ENTITY_UPDATE
+}
+type JobInstanceExportJobArguments {
+    exportSearchCriteria: JobInstanceExportJobArgumentsExportSearchCriteria
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+
+type JobInstanceExportJobArgumentsExportSearchCriteria {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: JobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteria
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [JobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecs]
+}
+type JobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteria {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+"type of search BASIC/ADVANCED/CUSTOM"
+enum EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType {
+    ADVANCED
+    BASIC
+    CUSTOM
+}
+type JobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecs {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+
+"export job types"
+enum EnumJobInstanceExportJobArgumentsExportType {
+    BrowseResults
+    Rationalization
+    SearchResults
+    SingleResourceView
+}
+
+"rationalization export type"
+enum EnumJobInstanceExportJobArgumentsR13NExportType {
+    EXPORT_COPY_GROUP
+    EXPORT_COPY_GROUP_BY_GROUP_ID
+    EXPORT_COPY_GROUP_DATA_SOURCE
+    EXPORT_COPY_GROUP_DATA_SOURCE_BY_SOURCE_NAME
+    EXPORT_COPY_GROUP_OWNERS
+    EXPORT_COPY_GROUP_OWNER_BY_OWNER_NAME
+    EXPORT_OVERLAP_DATA_SOURCES
+    EXPORT_OVERLAP_DATA_SOURCE_BY_SOURCE_KEY
+    EXPORT_OVERLAP_OWNERS
+    EXPORT_OVERLAP_OWNERS_BY_OWNER_NAME
+    EXPORT_OVERLAP_RESOURCES
+    EXPORT_OVERLAP_RESOURCE_BY_RESOURCE_KEY
+}
+"Asset type on which job will run "
+enum EnumJobInstanceJobAssetType {
+    DataObject
+    DataResource
+    DataSet
+    DataSource
+    VirtualFolder
+}
+"Overall Status of the job"
+enum EnumJobInstanceJobExecState {
+    CANCELLED
+    CANCELLING
+    FAILED
+    INCOMPLETE
+    INITIAL
+    INPROGRESS
+    SKIPPED
+    SUBMITTED
+    SUCCESS
+    SUCCESS_WITH_WARNING
+}
+"Type of job instance"
+enum EnumJobInstanceJobInstanceType {
+    BACKGROUND_JOB
+    BACKGROUND_TASK
+    OTHER
+    SPARK_JOB
+}
+
+input FilterCountJobInstanceInput {
+    AND: [FilterCountJobInstanceInput!]
+    OR: [FilterCountJobInstanceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterCountJobInstanceOperatorsInput
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: FilterCountJobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterCountJobInstanceOperatorsInput {
+    _id: FilterCountJobInstance_idOperatorsInput
+    name: FilterCountJobInstanceNameOperatorsInput
+}
+input FilterCountJobInstance_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterCountJobInstanceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input FilterCountJobInstanceExportJobArgumentsInput {
+    exportSearchCriteria: FilterCountJobInstanceExportJobArgumentsExportSearchCriteriaInput
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+input FilterCountJobInstanceExportJobArgumentsExportSearchCriteriaInput {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: FilterCountJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [FilterCountJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput]
+}
+input FilterCountJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+input FilterCountJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+
+enum SortFindByIdsJobInstanceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+input FilterFindManyJobInstanceInput {
+    AND: [FilterFindManyJobInstanceInput!]
+    OR: [FilterFindManyJobInstanceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterFindManyJobInstanceOperatorsInput
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: FilterFindManyJobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterFindManyJobInstanceOperatorsInput {
+    _id: FilterFindManyJobInstance_idOperatorsInput
+    name: FilterFindManyJobInstanceNameOperatorsInput
+}
+input FilterFindManyJobInstance_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterFindManyJobInstanceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input FilterFindManyJobInstanceExportJobArgumentsInput {
+    exportSearchCriteria: FilterFindManyJobInstanceExportJobArgumentsExportSearchCriteriaInput
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+input FilterFindManyJobInstanceExportJobArgumentsExportSearchCriteriaInput {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: FilterFindManyJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [FilterFindManyJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput]
+}
+input FilterFindManyJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+input FilterFindManyJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+enum SortFindManyJobInstanceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+input FilterFindOneJobInstanceInput {
+    AND: [FilterFindOneJobInstanceInput!]
+    OR: [FilterFindOneJobInstanceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterFindOneJobInstanceOperatorsInput
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: FilterFindOneJobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterFindOneJobInstanceOperatorsInput {
+    _id: FilterFindOneJobInstance_idOperatorsInput
+    name: FilterFindOneJobInstanceNameOperatorsInput
+}
+input FilterFindOneJobInstance_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterFindOneJobInstanceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input FilterFindOneJobInstanceExportJobArgumentsInput {
+    exportSearchCriteria: FilterFindOneJobInstanceExportJobArgumentsExportSearchCriteriaInput
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+input FilterFindOneJobInstanceExportJobArgumentsExportSearchCriteriaInput {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: FilterFindOneJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [FilterFindOneJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput]
+}
+input FilterFindOneJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+input FilterFindOneJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+enum SortFindOneJobInstanceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+
+"List of items with pagination."
+type JobInstancePagination {
+    "Total object count."
+    count: Int
+    "Array of objects."
+    items: [JobInstance!]
+    "Information to aid in pagination."
+    pageInfo: PaginationInfo!
+}
+input CreateManyJobInstanceInput {
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: JobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String!
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+input JobInstanceExportJobArgumentsInput {
+    exportSearchCriteria: JobInstanceExportJobArgumentsExportSearchCriteriaInput
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+input JobInstanceExportJobArgumentsExportSearchCriteriaInput {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: JobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [JobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput]
+}
+input JobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+input JobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+
+type CreateManyJobInstancePayload {
+    "Number of created documents"
+    createdCount: Int!
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Documents IDs"
+    recordIds: [MongoID!]!
+    "Created documents"
+    records: [JobInstance!]
+}
+input CreateOneJobInstanceInput {
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: JobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String!
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+type CreateOneJobInstancePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Created document"
+    record: JobInstance
+    "Document ID"
+    recordId: MongoID
+}
+type RemoveByIdJobInstancePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Removed document"
+    record: JobInstance
+    "Document ID"
+    recordId: MongoID
+}
+input FilterRemoveManyJobInstanceInput {
+    AND: [FilterRemoveManyJobInstanceInput!]
+    OR: [FilterRemoveManyJobInstanceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterRemoveManyJobInstanceOperatorsInput
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: FilterRemoveManyJobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterRemoveManyJobInstanceOperatorsInput {
+    _id: FilterRemoveManyJobInstance_idOperatorsInput
+    name: FilterRemoveManyJobInstanceNameOperatorsInput
+}
+
+input FilterRemoveManyJobInstance_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterRemoveManyJobInstanceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input FilterRemoveManyJobInstanceExportJobArgumentsInput {
+    exportSearchCriteria: FilterRemoveManyJobInstanceExportJobArgumentsExportSearchCriteriaInput
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+input FilterRemoveManyJobInstanceExportJobArgumentsExportSearchCriteriaInput {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: FilterRemoveManyJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [FilterRemoveManyJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput]
+}
+input FilterRemoveManyJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+input FilterRemoveManyJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+type RemoveManyJobInstancePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Affected documents number"
+    numAffected: Int
+}
+
+input FilterRemoveOneJobInstanceInput {
+    AND: [FilterRemoveOneJobInstanceInput!]
+    OR: [FilterRemoveOneJobInstanceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterRemoveOneJobInstanceOperatorsInput
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: FilterRemoveOneJobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+input FilterRemoveOneJobInstanceExportJobArgumentsInput {
+    exportSearchCriteria: FilterRemoveOneJobInstanceExportJobArgumentsExportSearchCriteriaInput
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+input FilterRemoveOneJobInstanceExportJobArgumentsExportSearchCriteriaInput {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: FilterRemoveOneJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [FilterRemoveOneJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput]
+}
+input FilterRemoveOneJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+input FilterRemoveOneJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+enum SortRemoveOneJobInstanceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+type RemoveOneJobInstancePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Removed document"
+    record: JobInstance
+    "Document ID"
+    recordId: MongoID
+}
+input UpdateByIdJobInstanceInput {
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: UpdateByIdJobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+
+type UpdateByIdJobInstancePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Updated document"
+    record: JobInstance
+    "Document ID"
+    recordId: MongoID
+}
+
+input FilterUpdateManyJobInstanceInput {
+    AND: [FilterUpdateManyJobInstanceInput!]
+    OR: [FilterUpdateManyJobInstanceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterUpdateManyJobInstanceOperatorsInput
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: FilterUpdateManyJobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+input FilterUpdateManyJobInstanceExportJobArgumentsInput {
+    exportSearchCriteria: FilterUpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaInput
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+input FilterUpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaInput {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: FilterUpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [FilterUpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput]
+}
+input FilterUpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+
+input FilterUpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+input UpdateManyJobInstanceInput {
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: UpdateManyJobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+input UpdateManyJobInstanceExportJobArgumentsInput {
+    exportSearchCriteria: UpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaInput
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+enum SortUpdateManyJobInstanceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+type UpdateManyJobInstancePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Affected documents number"
+    numAffected: Int
+}
+input FilterUpdateOneJobInstanceInput {
+    AND: [FilterUpdateOneJobInstanceInput!]
+    OR: [FilterUpdateOneJobInstanceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterUpdateOneJobInstanceOperatorsInput
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: FilterUpdateOneJobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterUpdateOneJobInstanceOperatorsInput {
+    _id: FilterUpdateOneJobInstance_idOperatorsInput
+    name: FilterUpdateOneJobInstanceNameOperatorsInput
+}
+input FilterUpdateOneJobInstance_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterUpdateOneJobInstanceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input FilterUpdateOneJobInstanceExportJobArgumentsInput {
+    exportSearchCriteria: FilterUpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaInput
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+input FilterUpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaInput {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: FilterUpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [FilterUpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput]
+}
+
+input FilterUpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+input FilterUpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+input UpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaInput {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: UpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [UpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput]
+}
+input UpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+input UpdateManyJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterUpdateManyJobInstanceOperatorsInput {
+    _id: FilterUpdateManyJobInstance_idOperatorsInput
+    name: FilterUpdateManyJobInstanceNameOperatorsInput
+}
+input FilterUpdateManyJobInstance_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterUpdateManyJobInstanceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterRemoveOneJobInstanceOperatorsInput {
+    _id: FilterRemoveOneJobInstance_idOperatorsInput
+    name: FilterRemoveOneJobInstanceNameOperatorsInput
+}
+
+input FilterRemoveOneJobInstance_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterRemoveOneJobInstanceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input UpdateByIdJobInstanceExportJobArgumentsInput {
+    exportSearchCriteria: UpdateByIdJobInstanceExportJobArgumentsExportSearchCriteriaInput
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+input UpdateByIdJobInstanceExportJobArgumentsExportSearchCriteriaInput {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: UpdateByIdJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [UpdateByIdJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput]
+}
+input UpdateByIdJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+input UpdateByIdJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+
+input UpdateOneJobInstanceInput {
+    "if at all we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "background task type"
+    backgroundTaskType: EnumJobInstanceBackgroundTaskType
+    "Extra parameters for spark submit."
+    cliArguments: String
+    "Auto generated description"
+    description: String
+    "Time took to complete the Job"
+    elapsedTime: Float
+    exportJobArguments: UpdateOneJobInstanceExportJobArgumentsInput
+    "Flag to identify the deleted(soft) instances"
+    isDeleted: Boolean
+    "_objectId from agent collection"
+    jobAgentId: MongoID
+    jobAssetList: [String]
+    jobAssetPaths: [String]
+    "Asset type on which job will run "
+    jobAssetType: EnumJobInstanceJobAssetType
+    "Overall Status of the job"
+    jobExecState: EnumJobInstanceJobExecState
+    "Type of job instance"
+    jobInstanceType: EnumJobInstanceJobInstanceType
+    "_objectId from the JobSequences collection"
+    jobSequenceId: MongoID
+    "name from jobSequence collection"
+    jobSequenceName: String
+    "_objectId from the jobTemplate collection"
+    jobTemplateId: MongoID
+    "name from jobTemplate collection"
+    jobTemplateName: String
+    "name of the jobInstance"
+    name: String
+    "User name, who triggered the Job"
+    principal: String
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+input UpdateOneJobInstanceExportJobArgumentsInput {
+    exportSearchCriteria: UpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaInput
+    "export job types"
+    exportType: EnumJobInstanceExportJobArgumentsExportType
+    "Fields to show in exported file"
+    fieldsToExport: String
+    "Folder Id from where the export should begin for Browse result export"
+    parentResourceId: String
+    "rationalization export type"
+    r13NExportType: EnumJobInstanceExportJobArgumentsR13NExportType
+    "Json string for rationalization result export"
+    r13NRequestJson: String
+    " for taking data from sub folders"
+    recursively: Boolean
+    "Single resource view exported resourceId"
+    resourceId: String
+    "Virtual folder Id for browse result export (if parent resource Id is missing , then it exports entire resources of selected virtual folder)"
+    virtualFolderId: String
+}
+input UpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaInput {
+    "Flag to apply facet selections"
+    applyFacets: Boolean
+    "scope of the entity"
+    entityScope: String
+    facetSelections: [String]
+    "Last selected facet name"
+    lastSelectedFacetName: String
+    pagingCriteria: UpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput
+    "Flag to check if a given search is a partial search/not"
+    partialSearch: Boolean
+    "preformed query"
+    preformedQuery: Boolean
+    "search phrase"
+    searchPhrase: String
+    "search query"
+    searchQuery: String
+    "type of search BASIC/ADVANCED/CUSTOM"
+    searchType: EnumJobInstanceExportJobArgumentsExportSearchCriteriaSearchType
+    "flag to show collection members/not"
+    showCollectionMembers: Boolean
+    sortBySpecs: [UpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput]
+}
+
+input UpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaPagingCriteriaInput {
+    "page size"
+    size: Float
+    "start page"
+    start: Float
+}
+input UpdateOneJobInstanceExportJobArgumentsExportSearchCriteriaSortBySpecsInput {
+    _id: MongoID
+    "sorting order"
+    ascending: Boolean
+    "name of the property"
+    propertyName: String
+}
+enum SortUpdateOneJobInstanceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+
+type UpdateOneJobInstancePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Updated document"
+    record: JobInstance
+    "Document ID"
+    recordId: MongoID
+}

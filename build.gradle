@@ -39,6 +39,9 @@ dependencies {
     implementation "com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter"
     implementation "com.netflix.graphql.dgs:graphql-dgs-client:4.9.0"
     implementation "org.springframework.boot:spring-boot-starter-webflux"
+    implementation 'org.mongodb:bson:4.3.3'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.13.0'
 }
 
 test {

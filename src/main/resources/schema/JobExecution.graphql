@@ -1,0 +1,1378 @@
+extend type Query {
+    jobExecutionCount(
+        "Filter by fields"
+        filter: FilterCountJobExecutionInput
+    ): Int
+    jobExecutionFindById(_id: MongoID!): JobExecution
+    jobExecutionFindByIds(_ids: [MongoID!]!, limit: Int = 100, sort: SortFindByIdsJobExecutionInput): [JobExecution!]!
+    jobExecutionFindMany(
+        "Filter by fields"
+        filter: FilterFindManyJobExecutionInput,
+        limit: Int = 100,
+        skip: Int,
+        sort: SortFindManyJobExecutionInput
+    ): [JobExecution!]!
+    jobExecutionFindOne(
+        "Filter by fields"
+        filter: FilterFindOneJobExecutionInput,
+        skip: Int,
+        sort: SortFindOneJobExecutionInput
+    ): JobExecution
+    jobExecutionPagination(
+        "Filter by fields"
+        filter: FilterFindManyJobExecutionInput,
+        "Page number for displaying"
+        page: Int,
+        perPage: Int = 20,
+        sort: SortFindManyJobExecutionInput
+    ): JobExecutionPagination
+}
+
+extend type Mutation {
+    "Creates Many documents with mongoose defaults, setters, hooks and validation"
+    jobExecutionCreateMany(records: [CreateManyJobExecutionInput!]!): CreateManyJobExecutionPayload
+    "Create one document with mongoose defaults, setters, hooks and validation"
+    jobExecutionCreateOne(record: CreateOneJobExecutionInput!): CreateOneJobExecutionPayload
+    "Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document."
+    jobExecutionRemoveById(_id: MongoID!): RemoveByIdJobExecutionPayload
+    "Remove many documents without returning them: Use Query.remove mongoose method. Do not apply mongoose defaults, setters, hooks and validation. "
+    jobExecutionRemoveMany(
+        "Filter by fields"
+        filter: FilterRemoveManyJobExecutionInput!,
+        limit: Int = 100
+    ): RemoveManyJobExecutionPayload
+    "Remove one document: 1) Remove with hooks via findOneAndRemove. 2) Return removed document."
+    jobExecutionRemoveOne(
+        "Filter by fields"
+        filter: FilterRemoveOneJobExecutionInput,
+        sort: SortRemoveOneJobExecutionInput
+    ): RemoveOneJobExecutionPayload
+    "Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it."
+    jobExecutionUpdateById(_id: MongoID!, record: UpdateByIdJobExecutionInput!): UpdateByIdJobExecutionPayload
+    "Update many documents without returning them: Use Query.update mongoose method. Do not apply mongoose defaults, setters, hooks and validation. "
+    jobExecutionUpdateMany(
+        "Filter by fields"
+        filter: FilterUpdateManyJobExecutionInput,
+        limit: Int = 100,
+        record: UpdateManyJobExecutionInput!,
+        skip: Int,
+        sort: SortUpdateManyJobExecutionInput
+    ): UpdateManyJobExecutionPayload
+    "Update one document: 1) Retrieve one document via findOne. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it."
+    jobExecutionUpdateOne(
+        "Filter by fields"
+        filter: FilterUpdateOneJobExecutionInput,
+        record: UpdateOneJobExecutionInput!,
+        skip: Int,
+        sort: SortUpdateOneJobExecutionInput
+    ): UpdateOneJobExecutionPayload
+}
+
+type JobExecution {
+    _id: MongoID!
+    attributes: JobExecutionAttributes
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "type of the entity , constant value job_execution"
+    type: String
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+
+type JobExecutionAttributes {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}
+"Overall Status of the job"
+enum EnumJobExecutionJobExecState {
+    CANCELLED
+    CANCELLING
+    FAILED
+    INCOMPLETE
+    INITIAL
+    INPROGRESS
+    SKIPPED
+    SUBMITTED
+    SUCCESS
+    SUCCESS_WITH_WARNING
+}
+
+"Type of the Job instance"
+enum EnumJobExecutionJobInstanceType {
+    BACKGROUND_JOB
+    BACKGROUND_TASK
+    OTHER
+    SPARK_JOB
+}
+"Type of the Job. can hold any one value given in enum"
+enum EnumJobExecutionSparkJobType {
+    addDataSetFolder
+    compact
+    createVirtualFolder
+    dataSetFormat
+    dataSetProcess
+    dataSetProfile
+    dataSetSchema
+    dataSetTag
+    deleteDatasets
+    deleteDatasource
+    deleteVirtualFolder
+    executeRules
+    exportResources
+    format
+    getSource
+    lineage
+    lineage_check
+    overlap
+    process
+    profile
+    purgeDataResources
+    refreshDataset
+    removeOldExports
+    schema
+    syncIndex
+    tag
+    tag_check
+    updateTagDomainNameInHeaders
+    updateVirtualFolder
+    utils
+    utils_yarn
+}
+
+input FilterCountJobExecutionInput {
+    AND: [FilterCountJobExecutionInput!]
+    OR: [FilterCountJobExecutionInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterCountJobExecutionOperatorsInput
+    attributes: FilterCountJobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterCountJobExecutionOperatorsInput {
+    _id: FilterCountJobExecution_idOperatorsInput
+}
+input FilterCountJobExecution_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterCountJobExecutionAttributesInput {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}
+enum SortFindByIdsJobExecutionInput {
+    _ID_ASC
+    _ID_DESC
+}
+input FilterFindManyJobExecutionInput {
+    AND: [FilterFindManyJobExecutionInput!]
+    OR: [FilterFindManyJobExecutionInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterFindManyJobExecutionOperatorsInput
+    attributes: FilterFindManyJobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterFindManyJobExecutionOperatorsInput {
+    _id: FilterFindManyJobExecution_idOperatorsInput
+}
+
+input FilterFindManyJobExecution_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+
+input FilterFindManyJobExecutionAttributesInput {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}
+enum SortFindManyJobExecutionInput {
+    _ID_ASC
+    _ID_DESC
+}
+input FilterFindOneJobExecutionInput {
+    AND: [FilterFindOneJobExecutionInput!]
+    OR: [FilterFindOneJobExecutionInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterFindOneJobExecutionOperatorsInput
+    attributes: FilterFindOneJobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterFindOneJobExecutionOperatorsInput {
+    _id: FilterFindOneJobExecution_idOperatorsInput
+}
+
+input FilterFindOneJobExecution_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterFindOneJobExecutionAttributesInput {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}
+enum SortFindOneJobExecutionInput {
+    _ID_ASC
+    _ID_DESC
+}
+
+"List of items with pagination."
+type JobExecutionPagination {
+    "Total object count."
+    count: Int
+    "Array of objects."
+    items: [JobExecution!]
+    "Information to aid in pagination."
+    pageInfo: PaginationInfo!
+}
+input CreateManyJobExecutionInput {
+    attributes: JobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+input JobExecutionAttributesInput {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}
+type CreateManyJobExecutionPayload {
+    "Number of created documents"
+    createdCount: Int!
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Documents IDs"
+    recordIds: [MongoID!]!
+    "Created documents"
+    records: [JobExecution!]
+}
+input CreateOneJobExecutionInput {
+    attributes: JobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+type CreateOneJobExecutionPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Created document"
+    record: JobExecution
+    "Document ID"
+    recordId: MongoID
+}
+type RemoveByIdJobExecutionPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Removed document"
+    record: JobExecution
+    "Document ID"
+    recordId: MongoID
+}
+input FilterRemoveManyJobExecutionInput {
+    AND: [FilterRemoveManyJobExecutionInput!]
+    OR: [FilterRemoveManyJobExecutionInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterRemoveManyJobExecutionOperatorsInput
+    attributes: FilterRemoveManyJobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterRemoveManyJobExecutionOperatorsInput {
+    _id: FilterRemoveManyJobExecution_idOperatorsInput
+}
+
+input FilterRemoveManyJobExecution_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterRemoveManyJobExecutionAttributesInput {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}
+type RemoveManyJobExecutionPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Affected documents number"
+    numAffected: Int
+}
+input FilterRemoveOneJobExecutionInput {
+    AND: [FilterRemoveOneJobExecutionInput!]
+    OR: [FilterRemoveOneJobExecutionInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterRemoveOneJobExecutionOperatorsInput
+    attributes: FilterRemoveOneJobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterRemoveOneJobExecutionOperatorsInput {
+    _id: FilterRemoveOneJobExecution_idOperatorsInput
+}
+
+input FilterRemoveOneJobExecution_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterRemoveOneJobExecutionAttributesInput {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}
+enum SortRemoveOneJobExecutionInput {
+    _ID_ASC
+    _ID_DESC
+}
+type RemoveOneJobExecutionPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Removed document"
+    record: JobExecution
+    "Document ID"
+    recordId: MongoID
+}
+
+input UpdateByIdJobExecutionInput {
+    attributes: UpdateByIdJobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+input UpdateByIdJobExecutionAttributesInput {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}
+input FilterUpdateManyJobExecutionInput {
+    AND: [FilterUpdateManyJobExecutionInput!]
+    OR: [FilterUpdateManyJobExecutionInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterUpdateManyJobExecutionOperatorsInput
+    attributes: FilterUpdateManyJobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterUpdateManyJobExecutionOperatorsInput {
+    _id: FilterUpdateManyJobExecution_idOperatorsInput
+}
+
+input FilterUpdateManyJobExecution_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+
+input FilterUpdateManyJobExecutionAttributesInput {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}
+
+type UpdateByIdJobExecutionPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Updated document"
+    record: JobExecution
+    "Document ID"
+    recordId: MongoID
+}
+enum SortUpdateManyJobExecutionInput {
+    _ID_ASC
+    _ID_DESC
+}
+type UpdateManyJobExecutionPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Affected documents number"
+    numAffected: Int
+}
+input FilterUpdateOneJobExecutionInput {
+    AND: [FilterUpdateOneJobExecutionInput!]
+    OR: [FilterUpdateOneJobExecutionInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterUpdateOneJobExecutionOperatorsInput
+    attributes: FilterUpdateOneJobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterUpdateOneJobExecutionOperatorsInput {
+    _id: FilterUpdateOneJobExecution_idOperatorsInput
+}
+
+input FilterUpdateOneJobExecution_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+
+input FilterUpdateOneJobExecutionAttributesInput {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}
+
+input UpdateOneJobExecutionInput {
+    attributes: UpdateOneJobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+input UpdateOneJobExecutionAttributesInput {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}
+
+enum SortUpdateOneJobExecutionInput {
+    _ID_ASC
+    _ID_DESC
+}
+type UpdateOneJobExecutionPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Updated document"
+    record: JobExecution
+    "Document ID"
+    recordId: MongoID
+}
+input UpdateManyJobExecutionInput {
+    attributes: UpdateManyJobExecutionAttributesInput
+    "Number of collections discovered"
+    collectionsDiscovered: Float
+    "Number of collections invalidated"
+    collectionsInvalidated: Float
+    "Number of collections updated"
+    collectionsUpdated: Float
+    "description of jobExecution job"
+    description: String
+    "Timestamp in milliseconds"
+    endTime: Date
+    "Random unique number"
+    executionId: String
+    "Absolute path on which job ran"
+    executionPath: String
+    "job execution run Id"
+    executionRunId: String
+    "Number of resources incomplete"
+    incompleteCount: Float
+    "Overall Status of the job"
+    jobExecState: EnumJobExecutionJobExecState
+    " _Id from JobInstances collection"
+    jobInstanceId: MongoID
+    "Type of the Job instance"
+    jobInstanceType: EnumJobExecutionJobInstanceType
+    "Number of lineages inserted"
+    lineageInsertedCount: Float
+    "User name, who triggered the Job"
+    principal: String
+    "Number of relationships created"
+    relationshipsCreated: Float
+    "Number of relationship errors"
+    relationshipsErrors: Float
+    "Number of relationships removed"
+    relationshipsRemoved: Float
+    "Number of relationships updated"
+    relationshipsUpdated: Float
+    "Number of resources added"
+    resourcesAddedCount: Float
+    "Number of resources deleted"
+    resourcesDeletedCount: Float
+    "Number of resources impacted"
+    resourcesImpactedCount: Float
+    "Number of resources skipped"
+    skippedCount: Float
+    "Spark log directory"
+    sparkEventLogDir: String
+    sparkHistoryServer: [String]
+    "Type of the Job. can hold any one value given in enum"
+    sparkJobType: EnumJobExecutionSparkJobType
+    "Timestamp in milliseconds"
+    startTime: Float
+    "Number of resources successful"
+    successCount: Float
+    "Number of tag associations inserted"
+    tagAssociationInsertedCount: Float
+    "Number of tag associations removed"
+    tagAssociationRemovedCount: Float
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Total size of data"
+    totalSize: Float
+    "Number of virtual folders deleted"
+    virtualFoldersDeletedCount: Float
+}
+
+input UpdateManyJobExecutionAttributesInput {
+    "command"
+    command: String
+    "execution recursive or not"
+    executionRecursive: Boolean
+    "execution work flow json"
+    executionWFJson: String
+    "Parent work flow Id"
+    parentWorkFlowId: String
+    "virtual folder Id"
+    virtualFolder: String
+}

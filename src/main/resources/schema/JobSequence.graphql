@@ -1,0 +1,784 @@
+extend type Query {
+    jobSequenceCount(
+        "Filter by fields"
+        filter: FilterCountJobSequenceInput
+    ): Int
+    jobSequenceFindById(_id: MongoID!): JobSequence
+    jobSequenceFindByIds(_ids: [MongoID!]!, limit: Int = 100, sort: SortFindByIdsJobSequenceInput): [JobSequence!]!
+    jobSequenceFindMany(
+        "Filter by fields"
+        filter: FilterFindManyJobSequenceInput,
+        limit: Int = 100,
+        skip: Int,
+        sort: SortFindManyJobSequenceInput
+    ): [JobSequence!]!
+    jobSequenceFindOne(
+        "Filter by fields"
+        filter: FilterFindOneJobSequenceInput,
+        skip: Int,
+        sort: SortFindOneJobSequenceInput
+    ): JobSequence
+    jobSequencePagination(
+        "Filter by fields"
+        filter: FilterFindManyJobSequenceInput,
+        "Page number for displaying"
+        page: Int,
+        perPage: Int = 20,
+        sort: SortFindManyJobSequenceInput
+    ): JobSequencePagination
+}
+
+extend type Mutation {
+    "Creates Many documents with mongoose defaults, setters, hooks and validation"
+    jobSequenceCreateMany(records: [CreateManyJobSequenceInput!]!): CreateManyJobSequencePayload
+    "Create one document with mongoose defaults, setters, hooks and validation"
+    jobSequenceCreateOne(record: CreateOneJobSequenceInput!): CreateOneJobSequencePayload
+    "Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document."
+    jobSequenceRemoveById(_id: MongoID!): RemoveByIdJobSequencePayload
+    "Remove many documents without returning them: Use Query.remove mongoose method. Do not apply mongoose defaults, setters, hooks and validation. "
+    jobSequenceRemoveMany(
+        "Filter by fields"
+        filter: FilterRemoveManyJobSequenceInput!,
+        limit: Int = 100
+    ): RemoveManyJobSequencePayload
+    "Remove one document: 1) Remove with hooks via findOneAndRemove. 2) Return removed document."
+    jobSequenceRemoveOne(
+        "Filter by fields"
+        filter: FilterRemoveOneJobSequenceInput,
+        sort: SortRemoveOneJobSequenceInput
+    ): RemoveOneJobSequencePayload
+    "Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it."
+    jobSequenceUpdateById(_id: MongoID!, record: UpdateByIdJobSequenceInput!): UpdateByIdJobSequencePayload
+    "Update many documents without returning them: Use Query.update mongoose method. Do not apply mongoose defaults, setters, hooks and validation. "
+    jobSequenceUpdateMany(
+        "Filter by fields"
+        filter: FilterUpdateManyJobSequenceInput,
+        limit: Int = 100,
+        record: UpdateManyJobSequenceInput!,
+        skip: Int,
+        sort: SortUpdateManyJobSequenceInput
+    ): UpdateManyJobSequencePayload
+    "Update one document: 1) Retrieve one document via findOne. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it."
+    jobSequenceUpdateOne(
+        "Filter by fields"
+        filter: FilterUpdateOneJobSequenceInput,
+        record: UpdateOneJobSequenceInput!,
+        skip: Int,
+        sort: SortUpdateOneJobSequenceInput
+    ): UpdateOneJobSequencePayload
+}
+
+type JobSequence {
+    _id: MongoID!
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String!
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "type of the entity"
+    type: String
+}
+
+input FilterCountJobSequenceInput {
+    AND: [FilterCountJobSequenceInput!]
+    OR: [FilterCountJobSequenceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterCountJobSequenceOperatorsInput
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterCountJobSequenceOperatorsInput {
+    _id: FilterCountJobSequence_idOperatorsInput
+    name: FilterCountJobSequenceNameOperatorsInput
+}
+input FilterCountJobSequence_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterCountJobSequenceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+enum SortFindByIdsJobSequenceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+
+input FilterFindManyJobSequenceInput {
+    AND: [FilterFindManyJobSequenceInput!]
+    OR: [FilterFindManyJobSequenceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterFindManyJobSequenceOperatorsInput
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterFindManyJobSequenceOperatorsInput {
+    _id: FilterFindManyJobSequence_idOperatorsInput
+    name: FilterFindManyJobSequenceNameOperatorsInput
+}
+
+input FilterFindManyJobSequence_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterFindManyJobSequenceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+enum SortFindManyJobSequenceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+input FilterFindOneJobSequenceInput {
+    AND: [FilterFindOneJobSequenceInput!]
+    OR: [FilterFindOneJobSequenceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterFindOneJobSequenceOperatorsInput
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterFindOneJobSequenceOperatorsInput {
+    _id: FilterFindOneJobSequence_idOperatorsInput
+    name: FilterFindOneJobSequenceNameOperatorsInput
+}
+input FilterFindOneJobSequence_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterFindOneJobSequenceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+enum SortFindOneJobSequenceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+
+"List of items with pagination."
+type JobSequencePagination {
+    "Total object count."
+    count: Int
+    "Array of objects."
+    items: [JobSequence!]
+    "Information to aid in pagination."
+    pageInfo: PaginationInfo!
+}
+input CreateManyJobSequenceInput {
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String!
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+type CreateManyJobSequencePayload {
+    "Number of created documents"
+    createdCount: Int!
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Documents IDs"
+    recordIds: [MongoID!]!
+    "Created documents"
+    records: [JobSequence!]
+}
+
+input CreateOneJobSequenceInput {
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String!
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+type CreateOneJobSequencePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Created document"
+    record: JobSequence
+    "Document ID"
+    recordId: MongoID
+}
+
+type RemoveByIdJobSequencePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Removed document"
+    record: JobSequence
+    "Document ID"
+    recordId: MongoID
+}
+input FilterRemoveManyJobSequenceInput {
+    AND: [FilterRemoveManyJobSequenceInput!]
+    OR: [FilterRemoveManyJobSequenceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterRemoveManyJobSequenceOperatorsInput
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterRemoveManyJobSequenceOperatorsInput {
+    _id: FilterRemoveManyJobSequence_idOperatorsInput
+    name: FilterRemoveManyJobSequenceNameOperatorsInput
+}
+input FilterRemoveManyJobSequence_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterRemoveManyJobSequenceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+type RemoveManyJobSequencePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Affected documents number"
+    numAffected: Int
+}
+input FilterRemoveOneJobSequenceInput {
+    AND: [FilterRemoveOneJobSequenceInput!]
+    OR: [FilterRemoveOneJobSequenceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterRemoveOneJobSequenceOperatorsInput
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterRemoveOneJobSequenceOperatorsInput {
+    _id: FilterRemoveOneJobSequence_idOperatorsInput
+    name: FilterRemoveOneJobSequenceNameOperatorsInput
+}
+input FilterRemoveOneJobSequence_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterRemoveOneJobSequenceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+enum SortRemoveOneJobSequenceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+
+type RemoveOneJobSequencePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Removed document"
+    record: JobSequence
+    "Document ID"
+    recordId: MongoID
+}
+
+input UpdateByIdJobSequenceInput {
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+
+type UpdateByIdJobSequencePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Updated document"
+    record: JobSequence
+    "Document ID"
+    recordId: MongoID
+}
+
+input FilterUpdateManyJobSequenceInput {
+    AND: [FilterUpdateManyJobSequenceInput!]
+    OR: [FilterUpdateManyJobSequenceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterUpdateManyJobSequenceOperatorsInput
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterUpdateManyJobSequenceOperatorsInput {
+    _id: FilterUpdateManyJobSequence_idOperatorsInput
+    name: FilterUpdateManyJobSequenceNameOperatorsInput
+}
+
+input FilterUpdateManyJobSequence_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+
+input FilterUpdateManyJobSequenceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input UpdateManyJobSequenceInput {
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+
+enum SortUpdateManyJobSequenceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+
+type UpdateManyJobSequencePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Affected documents number"
+    numAffected: Int
+}
+
+input FilterUpdateOneJobSequenceInput {
+    AND: [FilterUpdateOneJobSequenceInput!]
+    OR: [FilterUpdateOneJobSequenceInput!]
+    _id: MongoID
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterUpdateOneJobSequenceOperatorsInput
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterUpdateOneJobSequenceOperatorsInput {
+    _id: FilterUpdateOneJobSequence_idOperatorsInput
+    name: FilterUpdateOneJobSequenceNameOperatorsInput
+}
+
+input FilterUpdateOneJobSequence_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterUpdateOneJobSequenceNameOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input UpdateOneJobSequenceInput {
+    applicableAssetTypes: [String]
+    "If we need to store extra information(key-value pairs) in the document"
+    attributes: JSON
+    "description of the job sequence"
+    description: String
+    "display name of the job sequence"
+    displayName: String
+    "Help text Ex: Profile combo help content"
+    help: String
+    "Hint text Ex: Profile combo hint content"
+    hint: String
+    "Flag to differentiate background jobs which are internal and cannot run by the user explicitly"
+    isInternal: Boolean
+    "Flag to differentiate tool jobs related job sequences"
+    isTool: Boolean
+    "job sequence index"
+    jobSequenceIndex: Float
+    jobSteps: [String]
+    "name of the sequence"
+    name: String
+    optionalParamDefaults: [String]
+    optionalParams: [String]
+    requiredParams: [String]
+    supportedDatasources: [String]
+    timeOfCreation: Date
+    timeOfLastChange: Date
+}
+
+enum SortUpdateOneJobSequenceInput {
+    NAME_ASC
+    NAME_DESC
+    _ID_ASC
+    _ID_DESC
+}
+
+type UpdateOneJobSequencePayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Updated document"
+    record: JobSequence
+    "Document ID"
+    recordId: MongoID
+}
