@@ -5,8 +5,11 @@ import com.hv.catalog.graphql.generated.client.JobSequenceCreateOneProjectionRoo
 import com.hv.catalog.graphql.generated.client.JobSequenceCreateOne_RecordProjection;
 import com.hv.catalog.graphql.generated.client.JobSequenceFindByIdGraphQLQuery;
 import com.hv.catalog.graphql.generated.client.JobSequenceFindByIdProjectionRoot;
+import com.hv.catalog.graphql.generated.client.JobSequenceFindOneGraphQLQuery;
+import com.hv.catalog.graphql.generated.client.JobSequenceFindOneProjectionRoot;
 import com.hv.catalog.graphql.generated.types.CreateOneJobSequenceInput;
 import com.hv.catalog.graphql.generated.types.CreateOneJobSequencePayload;
+import com.hv.catalog.graphql.generated.types.FilterFindOneJobSequenceInput;
 import com.hv.catalog.graphql.generated.types.JobSequence;
 import com.hv.catalog.graphqlclientjava.util.GraphqlClientUtils;
 import com.jayway.jsonpath.TypeRef;
@@ -14,8 +17,6 @@ import com.netflix.graphql.dgs.client.GraphQLResponse;
 import com.netflix.graphql.dgs.client.MonoGraphQLClient;
 import com.netflix.graphql.dgs.client.WebClientGraphQLClient;
 import com.netflix.graphql.dgs.client.codegen.GraphQLQueryRequest;
-import graphql.Assert;
-import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -66,6 +67,7 @@ public class JobSequenceTests {
   }
 
   @Test
+  @Disabled("Should run against local app-server")
   void jobSequenceFindById() {
     String objectIdString = "616d499afd4d548daa4fbb7f";
     JobSequenceFindByIdGraphQLQuery query = JobSequenceFindByIdGraphQLQuery
@@ -84,4 +86,34 @@ public class JobSequenceTests {
     Assertions.assertEquals(objectIdString, jobSequence.get_id());
   }
 
+  @Test
+  @Disabled("Should run against local app-server")
+  void jobSequenceFindOne() {
+    FilterFindOneJobSequenceInput filter = FilterFindOneJobSequenceInput
+        .newBuilder()
+        .name("jsTest")
+        .build();
+    JobSequenceFindOneGraphQLQuery query = JobSequenceFindOneGraphQLQuery
+        .newRequest()
+        .filter(filter)
+        .build();
+    JobSequenceFindOneProjectionRoot projection = new JobSequenceFindOneProjectionRoot()
+        ._id()
+        .name()
+        .jobSteps()
+        .jobSequenceIndex()
+        .displayName()
+        .attributes()
+        .isInternal()
+        .isTool();
+    GraphQLQueryRequest request = new GraphQLQueryRequest(query, projection);
+    Mono<GraphQLResponse> responseMono = client.reactiveExecuteQuery(request.serialize());
+    GraphQLResponse response = responseMono.block();
+    Assertions.assertNotNull(response);
+    JobSequence jobSequence =
+        response.extractValueAsObject(query.getOperationName(), new TypeRef<JobSequence>() {
+        });
+    Assertions.assertNotNull(jobSequence);
+    System.out.println("JobSequence: " + jobSequence);
+  }
 }

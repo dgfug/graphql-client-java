@@ -1,0 +1,2285 @@
+extend type Query {
+    DataEntitiesById(_id: MongoID!): DataEntities
+    DataEntitiesByIds(_ids: [MongoID!]!, limit: Int = 100, sort: SortFindByIdsDataEntitiesInput): [DataEntities!]!
+    DataEntitiesCount(
+        "Filter by fields"
+        filter: FilterCountDataEntitiesInput
+    ): Int
+    DataEntitiesMany(
+        "Filter by fields"
+        filter: FilterFindManyDataEntitiesInput,
+        limit: Int = 100,
+        skip: Int,
+        sort: SortFindManyDataEntitiesInput
+    ): [DataEntities!]!
+    DataEntitiesOne(
+        "Filter by fields"
+        filter: FilterFindOneDataEntitiesInput,
+        skip: Int,
+        sort: SortFindOneDataEntitiesInput
+    ): DataEntities
+    DataEntitiesPagination(
+        "Filter by fields"
+        filter: FilterFindManyDataEntitiesInput,
+        "Page number for displaying"
+        page: Int,
+        perPage: Int = 20,
+        sort: SortFindManyDataEntitiesInput
+    ): DataEntitiesPagination
+}
+
+extend type Mutation {
+    "Creates Many documents with mongoose defaults, setters, hooks and validation"
+    DataEntitiesCreateMany(records: [CreateManyDataEntitiesInput!]!): CreateManyDataEntitiesPayload
+    "Create one document with mongoose defaults, setters, hooks and validation"
+    DataEntitiesCreateOne(record: CreateOneDataEntitiesInput!): CreateOneDataEntitiesPayload
+    "Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document."
+    DataEntitiesRemoveById(_id: MongoID!): RemoveByIdDataEntitiesPayload
+    "Remove many documents without returning them: Use Query.remove mongoose method. Do not apply mongoose defaults, setters, hooks and validation. "
+    DataEntitiesRemoveMany(
+        "Filter by fields"
+        filter: FilterRemoveManyDataEntitiesInput!,
+        limit: Int = 100
+    ): RemoveManyDataEntitiesPayload
+    "Remove one document: 1) Remove with hooks via findOneAndRemove. 2) Return removed document."
+    DataEntitiesRemoveOne(
+        "Filter by fields"
+        filter: FilterRemoveOneDataEntitiesInput,
+        sort: SortRemoveOneDataEntitiesInput
+    ): RemoveOneDataEntitiesPayload
+    "Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it."
+    DataEntitiesUpdateById(_id: MongoID!, record: UpdateByIdDataEntitiesInput!): UpdateByIdDataEntitiesPayload
+    "Update many documents without returning them: Use Query.update mongoose method. Do not apply mongoose defaults, setters, hooks and validation. "
+    DataEntitiesUpdateMany(
+        "Filter by fields"
+        filter: FilterUpdateManyDataEntitiesInput,
+        limit: Int = 100,
+        record: UpdateManyDataEntitiesInput!,
+        skip: Int,
+        sort: SortUpdateManyDataEntitiesInput
+    ): UpdateManyDataEntitiesPayload
+    "Update one document: 1) Retrieve one document via findOne. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it."
+    DataEntitiesUpdateOne(
+        "Filter by fields"
+        filter: FilterUpdateOneDataEntitiesInput,
+        record: UpdateOneDataEntitiesInput!,
+        skip: Int,
+        sort: SortUpdateOneDataEntitiesInput
+    ): UpdateOneDataEntitiesPayload
+}
+
+type DataEntities {
+    _id: MongoID!
+    "Logical ID of the data entity"
+    _logicalId: String
+    "Datasource attributes"
+    attributes: DataEntitiesAttributes
+    "Datasource attributes"
+    beAttributes: DataEntitiesBeAttributes
+    dataProfile(skip: Int, sort: SortFindOneDataProfileInput): DataProfile
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    fields(limit: Int = 100, skip: Int, sort: SortFindManyDataEntitiesInput): [DataEntities!]!
+    "The physical name of the data entity excluding path"
+    name: String!
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String!
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: DataEntitiesStatistics
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+enum SortFindByIdsDataEntitiesInput {
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+input FilterCountDataEntitiesInput {
+    AND: [FilterCountDataEntitiesInput!]
+    OR: [FilterCountDataEntitiesInput!]
+    _id: MongoID
+    "Logical ID of the data entity"
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterCountDataEntitiesOperatorsInput
+    "Datasource attributes"
+    attributes: FilterCountDataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: FilterCountDataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: FilterCountDataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterCountDataEntitiesOperatorsInput {
+    _id: FilterCountDataEntities_idOperatorsInput
+    _logicalId: FilterCountDataEntities_logicalIdOperatorsInput
+}
+
+input FilterCountDataEntities_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterCountDataEntities_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input FilterCountDataEntitiesStatisticsInput {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+input FilterCountDataEntitiesAttributesInput {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+input FilterCountDataEntitiesBeAttributesInput {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [FilterCountDataEntitiesBeAttributesCustomPropertiesInput]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+
+"Copy status of the data entity"
+enum EnumDataEntitiesBeAttributesCopyStatus {
+    Deprecated
+    Primary
+    Secondary
+}
+input FilterCountDataEntitiesBeAttributesCustomPropertiesInput {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+
+"Type of the data entity"
+enum EnumDataEntitiesType {
+    Column
+    File
+    Folder
+    RegistredResource
+    Schema
+    Table
+    TablePartition
+}
+
+enum SortFindManyDataEntitiesInput {
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+type DataEntitiesStatistics {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+
+type DataEntitiesAttributes {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+type DataEntitiesBeAttributes {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [DataEntitiesBeAttributesCustomProperties]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID!
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+
+type DataEntitiesBeAttributesCustomProperties {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+enum SortFindOneDataProfileInput {
+    DATAENITITYID_ASC
+    DATAENITITYID_DESC
+    _ID_ASC
+    _ID_DESC
+}
+
+input FilterFindManyDataEntitiesInput {
+    AND: [FilterFindManyDataEntitiesInput!]
+    OR: [FilterFindManyDataEntitiesInput!]
+    _id: MongoID
+    "Logical ID of the data entity"
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterFindManyDataEntitiesOperatorsInput
+    "Datasource attributes"
+    attributes: FilterFindManyDataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: FilterFindManyDataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: FilterFindManyDataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterFindManyDataEntitiesOperatorsInput {
+    _id: FilterFindManyDataEntities_idOperatorsInput
+    _logicalId: FilterFindManyDataEntities_logicalIdOperatorsInput
+}
+
+input FilterFindManyDataEntities_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+
+input FilterFindManyDataEntities_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input FilterFindManyDataEntitiesStatisticsInput {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+
+input FilterFindManyDataEntitiesBeAttributesInput {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [FilterFindManyDataEntitiesBeAttributesCustomPropertiesInput]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+input FilterFindManyDataEntitiesBeAttributesCustomPropertiesInput {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+input FilterFindManyDataEntitiesAttributesInput {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+input FilterFindOneDataEntitiesInput {
+    AND: [FilterFindOneDataEntitiesInput!]
+    OR: [FilterFindOneDataEntitiesInput!]
+    _id: MongoID
+    "Logical ID of the data entity"
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterFindOneDataEntitiesOperatorsInput
+    "Datasource attributes"
+    attributes: FilterFindOneDataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: FilterFindOneDataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: FilterFindOneDataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterFindOneDataEntitiesOperatorsInput {
+    _id: FilterFindOneDataEntities_idOperatorsInput
+    _logicalId: FilterFindOneDataEntities_logicalIdOperatorsInput
+}
+input FilterFindOneDataEntities_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterFindOneDataEntities_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input FilterFindOneDataEntitiesBeAttributesInput {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [FilterFindOneDataEntitiesBeAttributesCustomPropertiesInput]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+input FilterFindOneDataEntitiesStatisticsInput {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+input FilterFindOneDataEntitiesBeAttributesCustomPropertiesInput {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+
+input FilterFindOneDataEntitiesAttributesInput {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+enum SortFindOneDataEntitiesInput {
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+
+"List of items with pagination."
+type DataEntitiesPagination {
+    "Total object count."
+    count: Int
+    "Array of objects."
+    items: [DataEntities!]
+    "Information to aid in pagination."
+    pageInfo: PaginationInfo!
+}
+
+input CreateManyDataEntitiesInput {
+    "Logical ID of the data entity"
+    _logicalId: String
+    "Datasource attributes"
+    attributes: DataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: DataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String!
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String!
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: DataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+
+input DataEntitiesAttributesInput {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+input DataEntitiesBeAttributesInput {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [DataEntitiesBeAttributesCustomPropertiesInput]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID!
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+
+input DataEntitiesBeAttributesCustomPropertiesInput {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+type CreateManyDataEntitiesPayload {
+    "Number of created documents"
+    createdCount: Int!
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Documents IDs"
+    recordIds: [MongoID!]!
+    "Created documents"
+    records: [DataEntities!]
+}
+input CreateOneDataEntitiesInput {
+    "Logical ID of the data entity"
+    _logicalId: String
+    "Datasource attributes"
+    attributes: DataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: DataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String!
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String!
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: DataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+input DataEntitiesStatisticsInput {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+
+type CreateOneDataEntitiesPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Created document"
+    record: DataEntities
+    "Document ID"
+    recordId: MongoID
+}
+type RemoveByIdDataEntitiesPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Removed document"
+    record: DataEntities
+    "Document ID"
+    recordId: MongoID
+}
+input FilterRemoveManyDataEntitiesInput {
+    AND: [FilterRemoveManyDataEntitiesInput!]
+    OR: [FilterRemoveManyDataEntitiesInput!]
+    _id: MongoID
+    "Logical ID of the data entity"
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterRemoveManyDataEntitiesOperatorsInput
+    "Datasource attributes"
+    attributes: FilterRemoveManyDataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: FilterRemoveManyDataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: FilterRemoveManyDataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterRemoveManyDataEntitiesOperatorsInput {
+    _id: FilterRemoveManyDataEntities_idOperatorsInput
+    _logicalId: FilterRemoveManyDataEntities_logicalIdOperatorsInput
+}
+input FilterRemoveManyDataEntities_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterRemoveManyDataEntities_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+
+input FilterRemoveManyDataEntitiesStatisticsInput {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+input FilterRemoveManyDataEntitiesAttributesInput {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+
+input FilterRemoveManyDataEntitiesBeAttributesInput {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [FilterRemoveManyDataEntitiesBeAttributesCustomPropertiesInput]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+input FilterRemoveManyDataEntitiesBeAttributesCustomPropertiesInput {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+type RemoveManyDataEntitiesPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Affected documents number"
+    numAffected: Int
+}
+
+input FilterRemoveOneDataEntitiesInput {
+    AND: [FilterRemoveOneDataEntitiesInput!]
+    OR: [FilterRemoveOneDataEntitiesInput!]
+    _id: MongoID
+    "Logical ID of the data entity"
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterRemoveOneDataEntitiesOperatorsInput
+    "Datasource attributes"
+    attributes: FilterRemoveOneDataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: FilterRemoveOneDataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: FilterRemoveOneDataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterRemoveOneDataEntitiesOperatorsInput {
+    _id: FilterRemoveOneDataEntities_idOperatorsInput
+    _logicalId: FilterRemoveOneDataEntities_logicalIdOperatorsInput
+}
+
+input FilterRemoveOneDataEntities_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterRemoveOneDataEntities_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input FilterRemoveOneDataEntitiesStatisticsInput {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+input FilterRemoveOneDataEntitiesAttributesInput {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+input FilterRemoveOneDataEntitiesBeAttributesInput {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [FilterRemoveOneDataEntitiesBeAttributesCustomPropertiesInput]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+input FilterRemoveOneDataEntitiesBeAttributesCustomPropertiesInput {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+enum SortRemoveOneDataEntitiesInput {
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+
+type RemoveOneDataEntitiesPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Removed document"
+    record: DataEntities
+    "Document ID"
+    recordId: MongoID
+}
+input UpdateByIdDataEntitiesInput {
+    "Logical ID of the data entity"
+    _logicalId: String
+    "Datasource attributes"
+    attributes: UpdateByIdDataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: UpdateByIdDataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: UpdateByIdDataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+input UpdateByIdDataEntitiesAttributesInput {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+
+input UpdateByIdDataEntitiesStatisticsInput {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+
+input UpdateByIdDataEntitiesBeAttributesInput {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [UpdateByIdDataEntitiesBeAttributesCustomPropertiesInput]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+
+input UpdateByIdDataEntitiesBeAttributesCustomPropertiesInput {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+
+
+type UpdateByIdDataEntitiesPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Updated document"
+    record: DataEntities
+    "Document ID"
+    recordId: MongoID
+}
+
+input FilterUpdateManyDataEntitiesInput {
+    AND: [FilterUpdateManyDataEntitiesInput!]
+    OR: [FilterUpdateManyDataEntitiesInput!]
+    _id: MongoID
+    "Logical ID of the data entity"
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterUpdateManyDataEntitiesOperatorsInput
+    "Datasource attributes"
+    attributes: FilterUpdateManyDataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: FilterUpdateManyDataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: FilterUpdateManyDataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+
+"For performance reason this type contains only *indexed* fields."
+input FilterUpdateManyDataEntitiesOperatorsInput {
+    _id: FilterUpdateManyDataEntities_idOperatorsInput
+    _logicalId: FilterUpdateManyDataEntities_logicalIdOperatorsInput
+}
+input FilterUpdateManyDataEntities_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterUpdateManyDataEntities_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input FilterUpdateManyDataEntitiesStatisticsInput {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+input FilterUpdateManyDataEntitiesAttributesInput {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+
+input FilterUpdateManyDataEntitiesBeAttributesInput {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [FilterUpdateManyDataEntitiesBeAttributesCustomPropertiesInput]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+input FilterUpdateManyDataEntitiesBeAttributesCustomPropertiesInput {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+input UpdateManyDataEntitiesInput {
+    "Logical ID of the data entity"
+    _logicalId: String
+    "Datasource attributes"
+    attributes: UpdateManyDataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: UpdateManyDataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: UpdateManyDataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+input UpdateManyDataEntitiesStatisticsInput {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+input UpdateManyDataEntitiesAttributesInput {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+input UpdateManyDataEntitiesBeAttributesInput {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [UpdateManyDataEntitiesBeAttributesCustomPropertiesInput]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+input UpdateManyDataEntitiesBeAttributesCustomPropertiesInput {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+enum SortUpdateManyDataEntitiesInput {
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+type UpdateManyDataEntitiesPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Affected documents number"
+    numAffected: Int
+}
+
+input FilterUpdateOneDataEntitiesInput {
+    AND: [FilterUpdateOneDataEntitiesInput!]
+    OR: [FilterUpdateOneDataEntitiesInput!]
+    _id: MongoID
+    "Logical ID of the data entity"
+    _logicalId: String
+    "List of *indexed* fields that can be filtered via operators."
+    _operators: FilterUpdateOneDataEntitiesOperatorsInput
+    "Datasource attributes"
+    attributes: FilterUpdateOneDataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: FilterUpdateOneDataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: FilterUpdateOneDataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+"For performance reason this type contains only *indexed* fields."
+input FilterUpdateOneDataEntitiesOperatorsInput {
+    _id: FilterUpdateOneDataEntities_idOperatorsInput
+    _logicalId: FilterUpdateOneDataEntities_logicalIdOperatorsInput
+}
+input FilterUpdateOneDataEntities_idOperatorsInput {
+    exists: Boolean
+    gt: MongoID
+    gte: MongoID
+    in: [MongoID]
+    lt: MongoID
+    lte: MongoID
+    ne: MongoID
+    nin: [MongoID]
+}
+input FilterUpdateOneDataEntities_logicalIdOperatorsInput {
+    exists: Boolean
+    gt: String
+    gte: String
+    in: [String]
+    lt: String
+    lte: String
+    ne: String
+    nin: [String]
+    regex: RegExpAsString
+}
+input FilterUpdateOneDataEntitiesStatisticsInput {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+input FilterUpdateOneDataEntitiesAttributesInput {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+input FilterUpdateOneDataEntitiesBeAttributesInput {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [FilterUpdateOneDataEntitiesBeAttributesCustomPropertiesInput]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+input FilterUpdateOneDataEntitiesBeAttributesCustomPropertiesInput {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+input UpdateOneDataEntitiesInput {
+    "Logical ID of the data entity"
+    _logicalId: String
+    "Datasource attributes"
+    attributes: UpdateOneDataEntitiesAttributesInput
+    "Datasource attributes"
+    beAttributes: UpdateOneDataEntitiesBeAttributesInput
+    "Data version of the dataentity"
+    dataVersion: Float
+    "Datatype of the column"
+    description: String
+    "Extra datasource attributes"
+    extraAttributes: JSON
+    "The physical name of the data entity excluding path"
+    name: String
+    "Parent data entity ID"
+    parentId: String
+    "Path of the data entity"
+    path: String
+    "Datatype of the column"
+    rowCount: Float
+    "Statistics of the dataentity"
+    statistics: UpdateOneDataEntitiesStatisticsInput
+    timeOfCreation: Date
+    timeOfLastChange: Date
+    "Type of the data entity"
+    type: EnumDataEntitiesType
+}
+
+input UpdateOneDataEntitiesAttributesInput {
+    "Average user rating"
+    avgUserRating: Float
+    "Datatype of the column"
+    dataType: String
+    "Field index of the column"
+    fieldIndex: Float
+    "Field path of the column"
+    fieldPath: String
+    "Field separator of the data entity"
+    fieldSeparator: String
+    "File encoding of the data entity"
+    fileEncoding: String
+    "File format of the data entity"
+    fileFormat: String
+    "Flag to identify if header exists"
+    headerExists: Boolean
+    "Header row count"
+    headerRowCount: Float
+    "Maximum value. Applicable for Column"
+    max: String
+    "Minimum value. Applicable for Column"
+    min: String
+    "Nullable flag. Applicable for Column"
+    nullableFlag: Boolean
+    "XML end tag"
+    xmlEndTag: String
+    "XML root tag"
+    xmlRootTag: String
+    "XML row tag"
+    xmlRowTag: String
+    "XML start tag"
+    xmlStartTag: String
+}
+input UpdateOneDataEntitiesBeAttributesInput {
+    "List of business term IDs"
+    businessTerms: [MongoID]
+    "Flag to identify whether this dataentity is a member of a collection"
+    collectionMember: String
+    "Copy status of the data entity"
+    copyStatus: EnumDataEntitiesBeAttributesCopyStatus
+    "List of custom properties"
+    customProperties: [UpdateOneDataEntitiesBeAttributesCustomPropertiesInput]
+    "Execution state of the data entity"
+    executionState: String
+    "List of experts"
+    experts: [MongoID]
+    "File type recognised by Tika"
+    fileTikaType: String
+    "Fingerprint location of the data entity"
+    fingerPrintLocation: String
+    "Imported description"
+    importedDescription: String
+    "Experts inferred from the virtual folders"
+    inferredExperts: String
+    "List of labels"
+    labels: [String]
+    "List of owners"
+    owners: [MongoID]
+    "Partition keys"
+    partitionKeys: [String]
+    "Partition values"
+    partitionValues: [String]
+    "Datatype of the column"
+    previousLocations: [String]
+    "Source ID"
+    resourceOrigin: MongoID
+    "State of the dataentity"
+    resourceState: String
+    "Datatype of the column"
+    richDescriptionIds: [MongoID]
+    "Sensitivity of the dataentity"
+    sensitivity: String
+    "Storage policy of the data entity"
+    storagePolicy: String
+    "Storage policy desired of the data entity"
+    storagePolicyDesired: String
+    "Time of last DDL"
+    timeOfLastDDL: Date
+    "Last profiled time"
+    timeOfLastProfile: Date
+    "Datatype of the column"
+    timeOfResourceChange: Date
+    "Datatype of the column"
+    timeOfResourceCreation: Date
+}
+input UpdateOneDataEntitiesBeAttributesCustomPropertiesInput {
+    "Custom property name"
+    name: String
+    "Value of the property"
+    value: JSON
+}
+
+input UpdateOneDataEntitiesStatisticsInput {
+    "Number of unique values for the column"
+    cardinality: Float
+    "Number of comments available for the data entity"
+    commentCount: Float
+    "Number of data time values for the column"
+    dateTimeCount: Float
+    "Density value of the column"
+    density: Float
+    "Number of fields available for the data entity"
+    fieldCount: Float
+    "Number of null values for the column"
+    nullCount: Float
+    "Number of Number values for the column"
+    numberCount: Float
+    "Number of partitions available for the data entity. It is applicable for Table"
+    partitionCount: Float
+    "Size of the resource"
+    resourceSize: Float
+    "Selectvity value for the column"
+    selectivity: Float
+    "Number of String values for the column"
+    stringCount: Float
+    "Number of tables available for the data entity. It is applicable for Schema"
+    tableCount: Float
+    "Number of topics available for the data entity"
+    topicCount: Float
+    "Number of values for the column"
+    valueCount: Float
+}
+enum SortUpdateOneDataEntitiesInput {
+    _ID_ASC
+    _ID_DESC
+    _LOGICALID_ASC
+    _LOGICALID_DESC
+}
+
+type UpdateOneDataEntitiesPayload {
+    "Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response."
+    error: ErrorInterface
+    "Updated document"
+    record: DataEntities
+    "Document ID"
+    recordId: MongoID
+}
