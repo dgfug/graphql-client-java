@@ -1,6 +1,6 @@
 package com.hv.catalog.graphqlclientjava.service;
 
-import com.hv.catalog.graphql.generated.types.User;
+import com.hv.catalog.graphql.generated.types.MyUser;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +23,7 @@ class UserServiceTest {
 
   @Test
   void getUsers() {
-    List<User> users = service.getUsers();
+    List<MyUser> users = service.getUsers();
     Assertions.assertNotNull(users);
     Assertions.assertFalse(users.isEmpty());
     System.out.println(users);

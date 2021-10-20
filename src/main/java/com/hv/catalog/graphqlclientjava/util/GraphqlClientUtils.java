@@ -19,4 +19,17 @@ public class GraphqlClientUtils {
         .build();
   }
 
+  /**
+   * Get WebClient for a locally running graphql service instance.
+   *
+   * @return webclient
+   */
+  public static WebClient getLocalWebClient() {
+    return WebClient
+        .builder()
+        .baseUrl("http://localhost:3000/graphql/")
+        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+        .build();
+  }
+
 }
